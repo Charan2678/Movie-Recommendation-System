@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Movie Recommendation System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #1a1a2e;
+      --header-bg: #16213e;
+      --text-color: #e0e0e0;
+      --accent-color: #0f3460;
+      --button-color: #e94560;
+      --button-hover: #b8334a;
+      --card-bg: #0f3460;
+      --card-border: #533483;
+      --shadow-color: rgba(0, 0, 0, 0.3);
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: var(--header-bg);
+      padding: 20px 0;
+      box-shadow: 0 2px 10px var(--shadow-color);
+    }
+
+    h1 {
+      margin: 0;
+      color: #e94560;
+      font-size: 2.5em;
+      font-weight: 700;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      flex-grow: 1;
+    }
+
+    .intro-section {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .intro-section p {
+      font-size: 1.1em;
+      max-width: 700px;
+      margin: 15px auto 30px auto;
+      color: #b0b0b0;
+    }
+
+    input[type="text"] {
+      padding: 12px 15px;
+      width: calc(100% - 30px);
+      max-width: 400px;
+      font-size: 1em;
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+      background-color: var(--accent-color);
+      color: var(--text-color);
+      margin-bottom: 20px;
+      box-sizing: border-box;
+      transition: border-color 0.3s ease;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: var(--button-color);
+    }
+
+    button {
+      padding: 12px 25px;
+      font-size: 1.1em;
+      background-color: var(--button-color);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      font-weight: 600;
+    }
+
+    button:hover {
+      background-color: var(--button-hover);
+      transform: translateY(-2px);
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-top: 40px;
+    }
+
+    .movie-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px var(--shadow-color);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .movie-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px var(--shadow-color);
+    }
+
+    .movie-card-header {
+      padding: 15px;
+      background-color: var(--header-bg);
+      color: #e94560;
+      font-weight: 600;
+      font-size: 1.2em;
+      text-align: left;
+    }
+
+    .movie-card-body {
+      padding: 15px;
+      flex-grow: 1;
+      text-align: left;
+    }
+
+    .movie-card-body p {
+      margin: 5px 0;
+      font-size: 0.95em;
+      color: #b0b0b0;
+    }
+
+    .movie-card-body strong {
+      color: var(--text-color);
+    }
+
+    .movie-card-body .genres span {
+      display: inline-block;
+      background-color: var(--button-color);
+      color: #fff;
+      padding: 4px 8px;
+      border-radius: 5px;
+      font-size: 0.8em;
+      margin-right: 5px;
+      margin-bottom: 5px;
+    }
+
+    .movie-card-body .rating {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: #fdd835; /* Gold color for stars */
+      font-weight: 600;
+    }
+
+    .movie-card-body .rating svg {
+      width: 16px;
+      height: 16px;
+      fill: #fdd835;
+    }
+
+    footer {
+      background-color: var(--header-bg);
+      color: #b0b0b0;
+      text-align: center;
+      padding: 20px 0;
+      margin-top: 40px;
+      box-shadow: 0 -2px 10px var(--shadow-color);
+    }
+
+    /* Responsiveness */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2em;
+      }
+      .intro-section p {
+        font-size: 1em;
+      }
+      input[type="text"] {
+        width: 90%;
+      }
+      button {
+        width: 90%;
+      }
+      .results-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.8em;
+      }
+      .container {
+        padding: 15px;
+      }
+      .intro-section p {
+        font-size: 0.9em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>🎬 Movie Recommendation System</h1>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="intro-section">
+      <p>Enter a movie you like to get similar recommendations:</p>
+      <input type="text" id="movieInput" placeholder="Enter movie name..." />
+      <br />
+      <button onclick="recommendMovies()">Get Recommendations</button>
+    </section>
+
+    <section class="results" id="results">
+      <!-- Recommended movies will appear here -->
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Movie Recommendation System. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    function recommendMovies() {
+      const movie = document.getElementById('movieInput').value;
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML = "";
+
+      if (movie.trim() === "") {
+        resultsDiv.innerHTML = "<p style=\"text-align: center; color: #e94560;\">Please enter a movie name.</p>";
+        return;
+      }
+
+      // Placeholder for actual recommendations
+      // In a real application, you would make an API call here to your backend
+      const recommendations = [
+        { title: movie + " 2", genres: ["Action", "Sci-Fi"], rating: 7.5, director: "Director A" },
+        { title: "Similar to " + movie, genres: ["Drama", "Thriller"], rating: 8.2, director: "Director B" },
+        { title: movie + " Returns", genres: ["Comedy", "Adventure"], rating: 6.9, director: "Director C" },
+        { title: "The " + movie + " Chronicles", genres: ["Fantasy", "Action"], rating: 9.0, director: "Director D" },
+        { title: movie + " Remastered", genres: ["Animation", "Family"], rating: 7.8, director: "Director E" }
+      ];
+
+      const resultsGrid = document.createElement("div");
+      resultsGrid.className = "results-grid";
+
+      recommendations.forEach(rec => {
+        const movieCard = `
+          <div class="movie-card">
+            <div class="movie-card-header">${rec.title}</div>
+            <div class="movie-card-body">
+              <p><strong>Director:</strong> ${rec.director}</p>
+              <p class="genres"><strong>Genres:</strong> ${rec.genres.map(g => `<span>${g}</span>`).join('')}</p>
+              <p class="rating">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                  <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.006Z" clip-rule="evenodd" />
+                </svg>
+                ${rec.rating}
+              </p>
+            </div>
+          </div>
+        `;
+        resultsGrid.innerHTML += movieCard;
+      });
+      resultsDiv.appendChild(resultsGrid);
+    }
+  </script>
+</body>
+</html>
+
